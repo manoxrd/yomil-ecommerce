@@ -23,30 +23,7 @@ const { isMobile } = useSidebar();
 
 const priceRange = ref([25, 100]);
 
-const emit = defineEmits(['selectCategory']);
-
-// const categories = [
-//   {
-//     id: 1,
-//     name: 'Electronics'
-//   },
-//   {
-//     id: 2, 
-//     name: 'Farming'
-//   },
-//   {
-//     id: 3,
-//     name: 'Gold'
-//   },
-//   {
-//     id: 4,
-//     name: 'Sports'
-//   },
-//   {
-//     id: 5,
-//     name: 'Clothes'
-//   },
-// ]
+const emit = defineEmits(['selectCategory', 'filterByReview']);
 
 </script>
 
@@ -66,7 +43,8 @@ const emit = defineEmits(['selectCategory']);
         <SidebarMenu>
           <!--  -->
           <SidebarMenuItem v-for="category in categories" :key="category.id">
-            <SidebarMenuButton :class="currentCategory === category.name ? 'bg-sidebar-accent' : ''" @click="emit('selectCategory', category)">
+            <SidebarMenuButton :class="currentCategory === category.name ? 'bg-sidebar-accent' : ''"
+              @click="emit('selectCategory', category)">
 
               <span>{{ category.name }}</span>
 
@@ -79,7 +57,16 @@ const emit = defineEmits(['selectCategory']);
         <SidebarMenu>
           <SidebarMenuItem v-for="index in 4" :key="index">
             <SidebarMenuButton as="label">
-              <Checkbox />
+              <Checkbox @update:modelValue="(isChecked) => {
+
+                if (isChecked) {
+                  emit('filterByReview', {
+                    checked: isChecked,
+                    rating: 5 - index
+                  })
+                }
+                
+              }" />
               <span class="flex gap-x-1 items-center">
                 <Star :size="16" fill="#E8A736" stroke-width="0" />
                 +{{ 5 - index }}

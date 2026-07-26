@@ -23,7 +23,7 @@ const quantity = ref(1);
       </span>
       <Heading variant="large" class="font-inter" :title="product.name" />
 
-      <StarReview variant="product" />
+      <StarReview :avg_rating="product.rating" :reviews_count="product.reviews_count" />
     </div>
 
     <div class="flex flex-col gap-y-3">

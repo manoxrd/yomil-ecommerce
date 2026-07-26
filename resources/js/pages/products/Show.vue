@@ -56,53 +56,61 @@ const reviews = [
 
 const relatedProducts = [
   {
-    id: 1,
-    name: 'Wireless Noise-Cancelling Headphones',
-    category: 'Electronics',
-    description:
-      'Immerse yourself in pure sound with our industry-leading noise cancellation technology.',
-    time: 'Ends in 2 days',
-    price: '$299.00',
-    image:
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
-    rating: 4.8,
+  id: 1,
+  user_id: 1,
+  category_id: 1,
+  name: 'hi there',
+  slug: 'hi-there',
+  description: 'wewewewe',
+  price: 300,
+  stock: 1,
+  thumbnail_url: 'null'
   },
   {
-    id: 2,
-    name: 'Smart Fitness Watch Series 5',
-    category: 'Wearables',
-    description:
-      'Track your health, receive notifications, and stay active with built-in GPS.',
-    time: 'Ends in 5 hours',
-    price: '$199.99',
-    image:
-      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80',
-    rating: 4.5,
+  id: 1,
+  user_id: 1,
+  category_id: 1,
+  name: 'hi there',
+  slug: 'hi-there',
+  description: 'wewewewe',
+  price: 300,
+  stock: 1,
+  thumbnail_url: 'null'
   },
   {
-    id: 3,
-    name: 'Ultra-Slim Laptop Pro',
-    category: 'Computers',
-    description:
-      'Powerful performance packed into a beautifully thin, lightweight aluminum chassis.',
-    time: 'Limited Stock',
-    price: '$1,299.00',
-    image:
-      'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80',
-    rating: 4.9,
+  id: 1,
+  user_id: 1,
+  category_id: 1,
+  name: 'hi there',
+  slug: 'hi-there',
+  description: 'wewewewe',
+  price: 300,
+  stock: 1,
+  thumbnail_url: 'null'
   },
   {
-    id: 4,
-    name: 'Professional DSLR Camera',
-    category: 'Photography',
-    description:
-      'Capture stunningly detailed photos and 4K video with our flagship camera.',
-    time: 'Sale ends soon',
-    price: '$899.00',
-    image:
-      'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=500&q=80',
-    rating: 4.7,
+  id: 1,
+  user_id: 1,
+  category_id: 1,
+  name: 'hi there',
+  slug: 'hi-there',
+  description: 'wewewewe',
+  price: 300,
+  stock: 1,
+  thumbnail_url: 'null'
   },
+  {
+  id: 1,
+  user_id: 1,
+  category_id: 1,
+  name: 'hi there',
+  slug: 'hi-there',
+  description: 'wewewewe',
+  price: 300,
+  stock: 1,
+  thumbnail_url: 'null'
+  },
+  
 ];
 
 defineProps<{
@@ -173,7 +181,7 @@ defineProps<{
             </p>
 
             <div class="flex gap-x-0.5">
-              <StarReview :size="20" />
+              <StarReview variant="person" :size="20" />
             </div>
           </div>
         </div>

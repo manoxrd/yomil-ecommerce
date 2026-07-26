@@ -9,32 +9,41 @@ use Inertia\Inertia;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
-    {
-        // $products = Product::when($request->category, fn($query, $category) => $query->where('category_id', $category))->get();
+  /**
+   * Display a listing of the resource.
+   */
+  public function index(Request $request)
+  {
+    $category = Category::where('name', $request->category)->first();
 
-        // dd($request->category);
+    $rating = $request->rating;
 
-        $category = Category::where('name', $request->category)->first();
+    // $products = Product::where('is_active', true)
+    // ->when($category?->id, fn($query, $category) => $query->where('category_id', $category))
+    // ->when($rating, fn($query, $rating) => $query->where('product_rating', '<=', $rating))
+    // ->with('category')->withAvg('reviews', 'rating')->withCount('reviews')->get();
 
-        $products = Product::where('is_active', true)->when($category?->id, fn ($query, $category) => $query->where('category_id', $category))->with('category')->withAvg('reviews', 'rating')->withCount('reviews')->get();
+    $products = Product::where('is_active', true)
+      ->when($category?->id, fn($query, $category) => $query->where('category_id', $category))
+      ->when($rating, fn($query, $rating) => $query->where('rating', '>=', $rating))
+      ->with('category')->get();
 
-        $categories = Category::all();
+    $categories = Category::all();
 
-        return Inertia::render('products/Index', [
-            'products' => $products,
-            'category' => $category,
-            'categories' => $categories,
-        ]);
-    }
+    return Inertia::render('products/Index', [
+      'products' => $products,
+      'category' => $category,
+      'categories' => $categories,
+    ]);
+  }
 
-    public function show(Product $product)
-    {
-        return Inertia::render('products/Show', [
-            'product' => $product,
-        ]);
-    }
+  public function show(Product $product)
+  {
+    $product->loadAvg('reviews', 'rating')->loadCount('reviews');
+
+
+    return Inertia::render('products/Show', [
+      'product' => $product,
+    ]);
+  }
 }

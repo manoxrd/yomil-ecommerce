@@ -41,4 +41,14 @@ class Product extends Model
       get: fn() => Number::currency($this->price / 100, "USD")
     );
   }
+
+  protected function casts(): array
+    {
+        return [
+          // 'reviews_avg_rating' => 'float',
+          // 'reviews_count' => 'integer'
+        ];
+    }
 }
+
+

@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique()->index();
             $table->integer('price');
+            $table->float('rating')->nullable();
+            $table->integer('reviews_count')->nullable();
             $table->integer('discount_price')->nullable();
             $table->text('description');
             $table->string('thumbnail_url')->nullable();

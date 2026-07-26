@@ -5,12 +5,13 @@ import { computed } from 'vue';
 import FilteringSidebar from '@/components/products/FilteringSidebar.vue';
 import ProductCard from '@/components/products/ProductCard.vue';
 import SidebarProvider from '@/components/ui/sidebar/SidebarProvider.vue';
-import type { Category, Product } from '@/types';
+import type { Category, Product, Review } from '@/types';
 
 const props = defineProps<{
   products: Product[];
   category: Category | null;
   categories: Category[];
+  review: Review
 }>();
 
 const currentCategory = computed(() => props.category?.name ?? '');
@@ -24,6 +25,14 @@ const onCategorySelected = (category: any) => {
   }
 };
 
+const onReviewSelected = (args: any) => {
+
+  // if (currentCategory.value !== ar.name) {
+    console.log(args);
+    router.reload({ data: {rating: args.rating}, only: ['products', 'review'] });
+  // }
+};
+
 </script>
 
 <template>
@@ -32,7 +41,7 @@ const onCategorySelected = (category: any) => {
 
   <div class="flex min-h-screen justify-start bg-background">
     <SidebarProvider class="w-fit">
-      <FilteringSidebar :categories="categories" :currentCategory="currentCategory" @select-category="onCategorySelected" />
+      <FilteringSidebar :categories="categories" :currentCategory="currentCategory" @select-category="onCategorySelected" @filter-by-review="onReviewSelected" />
     </SidebarProvider>
 
     <div class="flex-1 p-6">

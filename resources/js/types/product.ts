@@ -17,4 +17,6 @@ export interface Product {
   formatted_price?: string;
   reviews?: Review[];
   reviews_avg_rating?: number;
+  reviews_count?: number;
+  rating?: number;
 }
