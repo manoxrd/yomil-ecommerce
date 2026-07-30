@@ -1,36 +1,40 @@
 <script setup lang="ts">
+
 import { Head } from '@inertiajs/vue3';
 import { router } from "@inertiajs/vue3";
-import { computed } from 'vue';
 import FilteringSidebar from '@/components/products/FilteringSidebar.vue';
 import ProductCard from '@/components/products/ProductCard.vue';
 import SidebarProvider from '@/components/ui/sidebar/SidebarProvider.vue';
-import type { Category, Product, Review } from '@/types';
+import type { Category, Product } from '@/types';
 
-const props = defineProps<{
+defineProps<{
   products: Product[];
-  category: Category | null;
-  categories: Category[];
-  review: Review
+  categories: Category[]
 }>();
 
-const currentCategory = computed(() => props.category?.name ?? '');
+const query = new URLSearchParams(window.location.search);
 
-const onCategorySelected = (category: any) => {
+const currentCategory = query.get('category') || '';
 
-  if (currentCategory.value !== category.name) {
+const maxPrice = query.get('max_price');
 
-    console.log(category);
-    router.reload({ data: {category: category.name}, only: ['products', 'category'] });
+const minPrice = query.get('min_price');
+
+const onCategorySelect = (category: any) => {
+
+  if (currentCategory !== category.name) {
+    router.reload({ data: { category: category.name }, only: ['products'] });
   }
 };
 
-const onReviewSelected = (args: any) => {
+const onReviewSelect = (index: number) => {
 
-  // if (currentCategory.value !== ar.name) {
-    console.log(args);
-    router.reload({ data: {rating: args.rating}, only: ['products', 'review'] });
-  // }
+  router.reload({ data: { rating: index }, only: ['products'] });
+};
+
+const onPriceRangeSelect = (priceRange: number[]) => {
+
+  router.reload({ data: { min_price: priceRange[0], max_price: priceRange[1] }, only: ['products'] });
 };
 
 </script>
@@ -41,7 +45,8 @@ const onReviewSelected = (args: any) => {
 
   <div class="flex min-h-screen justify-start bg-background">
     <SidebarProvider class="w-fit">
-      <FilteringSidebar :categories="categories" :currentCategory="currentCategory" @select-category="onCategorySelected" @filter-by-review="onReviewSelected" />
+      <FilteringSidebar :categories="categories" :max-price="maxPrice" :min-price="minPrice" :currentCategory="currentCategory" @select-category="onCategorySelect"
+        @filter-by-review="onReviewSelect" @select-price-range="onPriceRangeSelect" />
     </SidebarProvider>
 
     <div class="flex-1 p-6">

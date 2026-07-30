@@ -14,25 +14,19 @@ class ProductController extends Controller
    */
   public function index(Request $request)
   {
-    $category = Category::where('name', $request->category)->first();
-
-    $rating = $request->rating;
-
-    // $products = Product::where('is_active', true)
-    // ->when($category?->id, fn($query, $category) => $query->where('category_id', $category))
-    // ->when($rating, fn($query, $rating) => $query->where('product_rating', '<=', $rating))
-    // ->with('category')->withAvg('reviews', 'rating')->withCount('reviews')->get();
-
+    
     $products = Product::where('is_active', true)
-      ->when($category?->id, fn($query, $category) => $query->where('category_id', $category))
-      ->when($rating, fn($query, $rating) => $query->where('rating', '>=', $rating))
+      ->when($request->category, fn($query, $categoryName) => 
+          $query->whereHas('category', fn($q) => $q->where('name', $categoryName))
+      )
+      ->when($request->rating, fn($query, $rating) => $query->where('rating', '>=', $rating))
+      ->when($request->min_price && $request->max_price, fn($query) => $query->whereBetween('price', [$request->min_price * 100, $request->max_price * 100]))
       ->with('category')->get();
 
     $categories = Category::all();
 
     return Inertia::render('products/Index', [
       'products' => $products,
-      'category' => $category,
       'categories' => $categories,
     ]);
   }

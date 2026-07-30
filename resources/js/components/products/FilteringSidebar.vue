@@ -2,7 +2,9 @@
 import { Star } from '@lucide/vue';
 import { ref } from 'vue';
 import type { Category } from '@/types/category.js';
-import Checkbox from '../ui/checkbox/Checkbox.vue';
+import Label from '../ui/label/Label.vue';
+import RadioGroup from '../ui/radio-group/RadioGroup.vue';
+import RadioGroupItem from '../ui/radio-group/RadioGroupItem.vue';
 import Sidebar from '../ui/sidebar/Sidebar.vue';
 import SidebarContent from '../ui/sidebar/SidebarContent.vue';
 import SidebarGroup from '../ui/sidebar/SidebarGroup.vue';
@@ -14,16 +16,18 @@ import SidebarMenuItem from '../ui/sidebar/SidebarMenuItem.vue';
 import { useSidebar } from '../ui/sidebar/utils.js';
 import Slider from '../ui/slider/Slider.vue';
 
-defineProps<{
+const props =defineProps<{
   categories: Category[];
   currentCategory: string;
+  maxPrice: any;
+  minPrice: any;
 }>();
 
 const { isMobile } = useSidebar();
 
-const priceRange = ref([25, 100]);
+const priceRange = ref([props.minPrice, props.maxPrice]);
 
-const emit = defineEmits(['selectCategory', 'filterByReview']);
+const emit = defineEmits(['selectCategory', 'filterByReview', "selectPriceRange"]);
 
 </script>
 
@@ -54,26 +58,23 @@ const emit = defineEmits(['selectCategory', 'filterByReview']);
       </SidebarGroup>
       <SidebarGroup>
         <SidebarGroupLabel>Reviews</SidebarGroupLabel>
-        <SidebarMenu>
-          <SidebarMenuItem v-for="index in 4" :key="index">
-            <SidebarMenuButton as="label">
-              <Checkbox @update:modelValue="(isChecked) => {
-
-                if (isChecked) {
-                  emit('filterByReview', {
-                    checked: isChecked,
-                    rating: 5 - index
-                  })
-                }
-                
-              }" />
-              <span class="flex gap-x-1 items-center">
+        <RadioGroup default-value="any" @update:modelValue="(val) => emit('filterByReview', val)">
+          <SidebarMenu>
+            <SidebarMenuItem>
+              <SidebarMenuButton as="label" for="r-any" class="flex items-center space-x-2">
+                <RadioGroupItem id="r-any" value="any" />
+                <Label for="r-any">Any</Label>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem v-for="rating in [4, 3, 2, 1]" :key="rating">
+              <SidebarMenuButton as="label" :for="'r-' + rating" class="flex items-center space-x-2">
+                <RadioGroupItem :id="'r-' + rating" :value="rating" />
                 <Star :size="16" fill="#E8A736" stroke-width="0" />
-                +{{ 5 - index }}
-              </span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+                <Label :for="'r-' + rating">{{ rating }}+</Label>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          </SidebarMenu>
+        </RadioGroup>
       </SidebarGroup>
       <SidebarGroup>
         <SidebarGroupLabel>Price</SidebarGroupLabel>
@@ -83,7 +84,7 @@ const emit = defineEmits(['selectCategory', 'filterByReview']);
             <span>${{ priceRange[0] }}</span>
             <span>${{ priceRange[1] }}</span>
           </div>
-          <Slider v-model="priceRange" :min="25" :max="100" :step="1" class="mx-auto w-full max-w-xs" />
+          <Slider @value-commit="emit('selectPriceRange', priceRange)" v-model="priceRange" :min="25" :max="100" :step="1" class="mx-auto w-full max-w-xs" />
         </div>
       </SidebarGroup>
     </SidebarContent>

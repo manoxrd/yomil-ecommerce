@@ -20,7 +20,7 @@ defineProps<{
   <!-- Image -->
 <!-- {{ item.reviews }} -->
   <div class="relative h-56 overflow-hidden bg-muted/60 dark:bg-muted/30">
-      <img src="source" :alt="item.name"
+      <img :src="item.thumbnail_url ?? 'https://placehold.co/600x400?text=No+Image'" :alt="item.name"
         class="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-105" />
       <div v-if="false"
         class="absolute top-3 left-3 rounded-full border border-border/50 bg-background/80 px-3 py-1.5 text-xs font-semibold tracking-wide text-foreground shadow-xs backdrop-blur-md dark:bg-background/80 dark:text-foreground">
