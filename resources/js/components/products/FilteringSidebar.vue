@@ -27,7 +27,7 @@ const { isMobile } = useSidebar();
 
 const priceRange = ref([props.minPrice, props.maxPrice]);
 
-const emit = defineEmits(['selectCategory', 'filterByReview', "selectPriceRange"]);
+const emit = defineEmits(['selectCategory', 'filterByReview', 'selectPriceRange', 'clearAllFilters']);
 
 </script>
 
@@ -38,7 +38,7 @@ const emit = defineEmits(['selectCategory', 'filterByReview', "selectPriceRange"
     <SidebarHeader class="flex-row justify-between items-center px-2.5 pt-4">
       <!-- <Filter :size="18" fill="black" /> -->
       <span class="font-medium">Filter</span>
-      <button class="text-sm text-muted dark:text-muted-foreground cursor-pointer">Clear all</button>
+      <button class="text-sm text-muted dark:text-muted-foreground cursor-pointer" @click="emit('clearAllFilters')">Clear all</button>
 
     </SidebarHeader>
     <SidebarContent>

@@ -16,9 +16,9 @@ const query = new URLSearchParams(window.location.search);
 
 const currentCategory = query.get('category') || '';
 
-const maxPrice = query.get('max_price');
+const maxPrice = query.get('max_price') || 100;
 
-const minPrice = query.get('min_price');
+const minPrice = query.get('min_price') || 25;
 
 const onCategorySelect = (category: any) => {
 
@@ -37,6 +37,10 @@ const onPriceRangeSelect = (priceRange: number[]) => {
   router.reload({ data: { min_price: priceRange[0], max_price: priceRange[1] }, only: ['products'] });
 };
 
+const clear = () => {
+  window.location.search = '';
+}
+
 </script>
 
 <template>
@@ -46,7 +50,7 @@ const onPriceRangeSelect = (priceRange: number[]) => {
   <div class="flex min-h-screen justify-start bg-background">
     <SidebarProvider class="w-fit">
       <FilteringSidebar :categories="categories" :max-price="maxPrice" :min-price="minPrice" :currentCategory="currentCategory" @select-category="onCategorySelect"
-        @filter-by-review="onReviewSelect" @select-price-range="onPriceRangeSelect" />
+        @filter-by-review="onReviewSelect" @select-price-range="onPriceRangeSelect" @clear-all-filters="clear" />
     </SidebarProvider>
 
     <div class="flex-1 p-6">
