@@ -21,9 +21,12 @@ const props =defineProps<{
   currentCategory: string;
   maxPrice: any;
   minPrice: any;
+  selectedRating: string | null;
 }>();
 
 const { isMobile } = useSidebar();
+
+const parentRating = ref(props.selectedRating === 'any' ? props.selectedRating : Number(props.selectedRating));
 
 const priceRange = ref([props.minPrice, props.maxPrice]);
 
@@ -58,7 +61,7 @@ const emit = defineEmits(['selectCategory', 'filterByReview', 'selectPriceRange'
       </SidebarGroup>
       <SidebarGroup>
         <SidebarGroupLabel>Reviews</SidebarGroupLabel>
-        <RadioGroup default-value="any" @update:modelValue="(val) => emit('filterByReview', val)">
+        <RadioGroup :default-value="parentRating" @update:modelValue="(val) => emit('filterByReview', val)" v-model="parentRating">
           <SidebarMenu>
             <SidebarMenuItem>
               <SidebarMenuButton as="label" for="r-any" class="flex items-center space-x-2">

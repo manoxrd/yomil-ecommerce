@@ -14,14 +14,16 @@ class ProductController extends Controller
    */
   public function index(Request $request)
   {
-    
+
     $products = Product::where('is_active', true)
       ->when($request->category, fn($query, $categoryName) => 
           $query->whereHas('category', fn($q) => $q->where('name', $categoryName))
       )
       ->when($request->rating, fn($query, $rating) => $query->where('rating', '>=', $rating))
       ->when($request->min_price && $request->max_price, fn($query) => $query->whereBetween('price', [$request->min_price * 100, $request->max_price * 100]))
-      ->with('category')->get();
+      ->with('category')->paginate(12)->withQueryString();
+
+      // dd($products);
 
     $categories = Category::all();
 
