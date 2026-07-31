@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Number;
 
@@ -35,6 +36,10 @@ class Product extends Model
     return $this->hasMany(Review::class);
   }
 
+  public function relatedProducts(): BelongsToMany {
+    return $this->belongsToMany(Product::class, 'related_products', 'product_id', 'related_product_id');
+  }
+
   protected function formattedPrice(): Attribute
   {
     return Attribute::make(
@@ -43,12 +48,7 @@ class Product extends Model
   }
 
   protected function casts(): array
-    {
-        return [
-          // 'reviews_avg_rating' => 'float',
-          // 'reviews_count' => 'integer'
-        ];
-    }
+  {
+    return [];
+  }
 }
-
-

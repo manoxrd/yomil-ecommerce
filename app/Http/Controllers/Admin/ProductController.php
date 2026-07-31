@@ -18,6 +18,12 @@ class ProductController extends Controller
     ]);
   }
 
+  public function show(Product $product) {
+    return Inertia::render('admin/products/Show', [
+      'product' => $product
+    ]);
+  }
+
   /**
    * Show the form for creating a new resource.
    */

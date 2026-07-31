@@ -4,8 +4,8 @@ import InputError from '@/components/InputError.vue';
 import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
 import Separator from '@/components/ui/separator/Separator.vue';
+import { show } from '@/routes/admin/products';
 import { index } from '@/routes/products';
-import { show } from '@/routes/products';
 import type { Product } from '@/types';
 
 defineOptions({
@@ -88,7 +88,7 @@ defineProps<{
               <td
                 class="px-4 py-3 font-medium text-gray-900 dark:text-gray-100"
               >
-                <Link :href="show(product.slug)">
+                <Link :href="show(product.id)">
                   {{ product.name }}
                 </Link>
               </td>
