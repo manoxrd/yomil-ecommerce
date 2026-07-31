@@ -22,7 +22,7 @@ return new class extends Migration
             $table->integer('price');
             $table->float('rating')->nullable();
             $table->integer('reviews_count')->nullable();
-            $table->integer('discount_price')->nullable();
+            $table->integer('discount')->nullable();
             $table->text('description');
             $table->string('thumbnail_url')->nullable();
             $table->integer('stock')->default(1);

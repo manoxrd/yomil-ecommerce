@@ -49,6 +49,8 @@ class Product extends Model
 
   protected function casts(): array
   {
-    return [];
+    return [
+      'is_active' => 'boolean'
+    ];
   }
 }
