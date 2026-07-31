@@ -18,11 +18,13 @@ import Slider from '../ui/slider/Slider.vue';
 
 const props =defineProps<{
   categories: Category[];
-  currentCategory: string;
+  // currentCategory: string;
   maxPrice: any;
   minPrice: any;
   selectedRating: string | null;
 }>();
+
+const model = defineModel<string>();
 
 const { isMobile } = useSidebar();
 
@@ -50,8 +52,8 @@ const emit = defineEmits(['selectCategory', 'filterByReview', 'selectPriceRange'
         <SidebarMenu>
           <!--  -->
           <SidebarMenuItem v-for="category in categories" :key="category.id">
-            <SidebarMenuButton :class="currentCategory === category.name ? 'bg-sidebar-accent' : ''"
-              @click="emit('selectCategory', category)">
+            <SidebarMenuButton :class="model === category.name ? 'bg-sidebar-accent' : ''"
+              @click="model = category.name; emit('selectCategory', category)">
 
               <span>{{ category.name }}</span>
 
