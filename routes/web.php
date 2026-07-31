@@ -13,7 +13,7 @@ Route::middleware(['auth', UserHasRole::class . ':admin,employee'])->prefix('adm
 
   Route::get('products', [AdminProductController::class, 'index'])->name('products.index');
 
-  Route::get('products/{product}', [AdminProductController::class, 'show'])->name('products.show');
+  Route::get('products/{product}', [AdminProductController::class, 'edit'])->name('products.edit');
 });
 
 Route::get('products', [ProductController::class, 'index'])->name('products.index');

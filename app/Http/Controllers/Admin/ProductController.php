@@ -18,32 +18,21 @@ class ProductController extends Controller
     ]);
   }
 
-  public function show(Product $product) {
-    return Inertia::render('admin/products/Show', [
-      'product' => $product
-    ]);
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   */
   public function create()
   {
     //
   }
 
-  /**
-   * Store a newly created resource in storage.
-   */
   public function store(Request $request)
   {
     //
   }
 
-  /**
-   * Show the form for editing the specified resource.
-   */
-  public function edit(Product $product) {}
+  public function edit(Product $product) {
+    return Inertia::render('admin/products/Edit', [
+      'product' => $product
+    ]);
+  }
 
   /**
    * Update the specified resource in storage.
