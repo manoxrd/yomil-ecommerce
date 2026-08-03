@@ -13,12 +13,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\Attributes\Sluggable;
 
+#[Fillable(['name', 'stock', 'price', 'is_active', 'description', 'thumbnail'])]
 #[Sluggable(from: 'name', to: 'slug')]
 
 class Product extends Model
 {
   /** @use HasFactory<ProductFactory> */
   use HasFactory;
+
+  protected $appends = ['thumbnail_url'];
 
   public function user(): BelongsTo
   {
