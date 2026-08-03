@@ -3,14 +3,17 @@
 namespace App\Models;
 
 use Database\Factories\ProductFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Support\Number;
-use Storage;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Sluggable\Attributes\Sluggable;
+
+#[Sluggable(from: 'name', to: 'slug')]
 
 class Product extends Model
 {
