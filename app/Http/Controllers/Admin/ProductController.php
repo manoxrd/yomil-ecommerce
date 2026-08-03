@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class ProductController extends Controller
@@ -20,12 +21,12 @@ class ProductController extends Controller
 
   public function create()
   {
-    //
+    
   }
 
   public function store(Request $request)
   {
-    //
+    
   }
 
   public function edit(Product $product) {
@@ -34,17 +35,34 @@ class ProductController extends Controller
     ]);
   }
 
-  /**
-   * Update the specified resource in storage.
-   */
   public function update(Request $request, Product $product)
   {
-    //
+
+    $validated = $request->validate([
+      'name' => ['required', 'string', 'max:50', 'min:5'],
+      'description' => ['nullable', 'string', 'max:255', 'min:10'],
+      'price' => ['required', 'numeric', 'min:1'],
+      'stock' => ['required', 'numeric', 'min:0'],
+      'is_active' => ['required', 'boolean'],
+      'thumbnail' => ['nullable', 'image']
+    ]);
+    
+    if ($request->hasFile('thumbnail') === true) {
+      
+      if ($product->thumbnail) {
+        Storage::disk('public')->delete($product->thumbnail);
+      }
+      
+      $validated['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+    } else {
+      unset($validated['thumbnail']);
+    }
+
+    $product->update($validated);
+
+    return redirect()->route('admin.products.edit', $product->id);
   }
 
-  /**
-   * Remove the specified resource from storage.
-   */
   public function destroy(Product $product)
   {
     //
