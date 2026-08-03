@@ -27,7 +27,7 @@ const quantity = ref(1);
     </div>
 
     <div class="flex flex-col gap-y-3">
-      <ProductPrice />
+      <ProductPrice :price="product.price" />
 
       <ProductDescription
         >A Great Gaming laptop that is used also for Graphic Design lorme ipsum

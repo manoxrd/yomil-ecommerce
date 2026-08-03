@@ -1,16 +1,14 @@
-<script setup lang="ts"></script>
-<!--
- #f7ece9
- #587aac 
+<script setup lang="ts">
+import { formatCurrency } from '@/lib/utils';
 
+defineProps<{
+  price: number
+}>();
 
+</script>
 
- #0c3b2e
-
-
-
- #FAEFD9
--->
 <template>
-  <span class="text-2xl font-black">$75.00</span>
+  <span class="text-xl font-black tracking-tight text-foreground">{{
+    formatCurrency(price)
+    }}</span>
 </template>

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-// import products from '@/routes/products/index.js';
+
 import { Link } from '@inertiajs/vue3';
 import { show } from '@/routes/products';
 import type { Product } from '@/types/product.js';
 import StarReview from '../StarReview.vue';
 import AddToCart from './AddToCart.vue';
+import ProductPrice from './ProductPrice.vue';
 
 defineProps<{
   products: Product[];
@@ -45,9 +46,9 @@ defineProps<{
       </p>
 
       <div class="mb-5 flex items-center justify-between">
-        <span class="text-xl font-black tracking-tight text-foreground">{{
-          item.formatted_price
-          }}</span>
+        <span class="text-xl font-black tracking-tight text-foreground">
+          <ProductPrice :price="item.price" />
+        </span>
         <StarReview variant="mini" :size="14" :avg_rating="item.rating" :reviews_count="item.reviews_count" />
       </div>
 

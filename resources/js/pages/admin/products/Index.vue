@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { Head, Link } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
+import ProductPrice from '@/components/products/ProductPrice.vue';
 import Input from '@/components/ui/input/Input.vue';
 import Label from '@/components/ui/label/Label.vue';
 import Separator from '@/components/ui/separator/Separator.vue';
 import { edit } from '@/routes/admin/products';
-import { index } from '@/routes/products';
 import type { Product } from '@/types';
 
 defineOptions({
@@ -95,16 +95,18 @@ defineProps<{
               <td class="px-4 py-3 text-gray-500 dark:text-gray-400">
                 Electronics
               </td>
-              <td class="px-4 py-3 text-right">${{ product.price }}</td>
+              <td class="px-4 py-3 text-right">
+                <ProductPrice :price="product.price" />
+              </td>
               <td class="px-4 py-3 text-right">
                 {{ product.stock }}
               </td>
               <td class="px-4 py-3 text-center">
                 <Link
-                  :href="index()"
-                  class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300"
+                  :href="edit(product.id)"
+                  class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
                 >
-                  Edit
+                  Delete
                 </Link>
               </td>
             </tr>

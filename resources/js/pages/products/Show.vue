@@ -64,7 +64,8 @@ const relatedProducts = [
   description: 'wewewewe',
   price: 300,
   stock: 1,
-  thumbnail_url: 'null'
+  thumbnail_url: 'null',
+  is_active: true
   },
   {
   id: 1,
@@ -75,7 +76,8 @@ const relatedProducts = [
   description: 'wewewewe',
   price: 300,
   stock: 1,
-  thumbnail_url: 'null'
+  thumbnail_url: 'null',
+  is_active: true
   },
   {
   id: 1,
@@ -86,7 +88,8 @@ const relatedProducts = [
   description: 'wewewewe',
   price: 300,
   stock: 1,
-  thumbnail_url: 'null'
+  thumbnail_url: 'null',
+  is_active: true
   },
   {
   id: 1,
@@ -97,7 +100,8 @@ const relatedProducts = [
   description: 'wewewewe',
   price: 300,
   stock: 1,
-  thumbnail_url: 'null'
+  thumbnail_url: 'null',
+  is_active: true
   },
   {
   id: 1,
@@ -108,7 +112,8 @@ const relatedProducts = [
   description: 'wewewewe',
   price: 300,
   stock: 1,
-  thumbnail_url: 'null'
+  thumbnail_url: 'null',
+  is_active: true
   },
   
 ];
