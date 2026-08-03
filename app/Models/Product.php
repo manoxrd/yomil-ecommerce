@@ -52,7 +52,14 @@ class Product extends Model
     );
   }
 
-  
+  protected function thumbnailUrl(): Attribute
+  {
+    return Attribute::get(
+      fn() => $this->thumbnail
+        ? Storage::disk('public')->url($this->thumbnail)
+        : ''
+    );
+  }
 
   protected function casts(): array
   {

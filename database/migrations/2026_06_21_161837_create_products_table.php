@@ -23,8 +23,8 @@ return new class extends Migration
             $table->float('rating')->nullable();
             $table->integer('reviews_count')->nullable();
             $table->integer('discount')->nullable();
-            $table->text('description');
-            $table->string('thumbnail_url')->nullable();
+            $table->text('description')->nullable();
+            $table->string('thumbnail')->nullable();
             $table->integer('stock')->default(1);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
