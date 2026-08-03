@@ -40,10 +40,17 @@ class Product extends Model
     return $this->belongsToMany(Product::class, 'related_products', 'product_id', 'related_product_id');
   }
 
-  protected function formattedPrice(): Attribute
+  protected function price(): Attribute
   {
     return Attribute::make(
-      get: fn() => Number::currency($this->price / 100, "USD")
+      get: fn($value) => Number::currency($value / 100, "USD"),
+      
+      // set: fn() => Number::currency($this->price * 100, "USD")
+      set: function ($value) {
+        $formatter = new \NumberFormatter('en_US', \NumberFormatter::CURRENCY);
+        $currency = 'USD';
+        return $formatter->parseCurrency($value, $currency) * 100;
+      },
     );
   }
 
