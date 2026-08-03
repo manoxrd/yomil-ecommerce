@@ -10,13 +10,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Number;
+use Storage;
 
 class Product extends Model
 {
   /** @use HasFactory<ProductFactory> */
   use HasFactory;
-
-  protected $appends = ['formatted_price'];
 
   public function user(): BelongsTo
   {
@@ -36,23 +35,21 @@ class Product extends Model
     return $this->hasMany(Review::class);
   }
 
-  public function relatedProducts(): BelongsToMany {
+  public function relatedProducts(): BelongsToMany
+  {
     return $this->belongsToMany(Product::class, 'related_products', 'product_id', 'related_product_id');
   }
 
   protected function price(): Attribute
   {
     return Attribute::make(
-      get: fn($value) => Number::currency($value / 100, "USD"),
-      
-      // set: fn() => Number::currency($this->price * 100, "USD")
-      set: function ($value) {
-        $formatter = new \NumberFormatter('en_US', \NumberFormatter::CURRENCY);
-        $currency = 'USD';
-        return $formatter->parseCurrency($value, $currency) * 100;
-      },
+      get: fn($value) => $value / 100,
+
+      set: fn($value) => $value * 100
     );
   }
+
+  
 
   protected function casts(): array
   {
