@@ -1,4 +1,3 @@
-import type { User } from './auth';
 import type { Category } from './category';
 import type { Review } from './review';
 
@@ -8,15 +7,13 @@ export interface Product {
   category_id: number;
   name: string;
   slug: string;
-  description: string;
+  description?: string;
   price: number;
+  rating?: number;
   stock: number;
   thumbnail_url: string;
   is_active: boolean;
-  user?: User;
   category?: Category;
   reviews?: Review[];
-  reviews_avg_rating?: number;
   reviews_count?: number;
-  rating?: number;
 }

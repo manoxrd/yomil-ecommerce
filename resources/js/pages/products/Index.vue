@@ -49,8 +49,8 @@ const clear = () => {
 
   <Head title="Products Catalog" />
 
-  <div class="flex min-h-screen bg-background justify-center">
-    <SidebarProvider class="w-fit justify-center">
+  <div class="flex min-h-screen bg-background justify-start">
+    <SidebarProvider class="justify-center">
       <FilteringSidebar :categories="categories" :selected-rating="currentRating" :max-price="maxPrice"
         :min-price="minPrice" v-model="currentCategory" @select-category="onCategorySelect"
         @filter-by-review="onReviewSelect" @select-price-range="onPriceRangeSelect" @clear-all-filters="clear" />
@@ -63,9 +63,10 @@ const clear = () => {
           <p class="text-sm text-muted-foreground whitespace-nowrap">Page {{ products.current_page }} of {{
             products.last_page }}</p>
         </div>
-        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div v-if="products.data.length" class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           <ProductCard :products="products.data" />
         </div>
+        <div v-else class="w-full h-screen text-center pt-25 text-xl font-inter">No Products Match these Filters</div>
         <div class="flex items-center justify-center py-10 gap-x-4">
           <Link :href="products.prev_page_url ?? ''" :class="{
             'text-muted-foreground opacity-50 pointer-events-none': !products.prev_page_url
