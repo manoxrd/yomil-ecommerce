@@ -16,6 +16,7 @@ Route::middleware(['auth', UserHasRole::class . ':admin,employee'])->prefix('adm
   Route::get('products/{product}/edit', [AdminProductController::class, 'edit'])->name('products.edit');
 
   Route::patch('products/{product}', [AdminProductController::class, 'update'])->name('products.update');
+  Route::get('products/create', [AdminProductController::class, 'create']);
 });
 
 Route::get('products', [ProductController::class, 'index'])->name('products.index');
