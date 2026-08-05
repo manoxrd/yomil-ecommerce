@@ -13,15 +13,26 @@ import {
   NumberFieldIncrement,
   NumberFieldInput,
 } from '@/components/ui/number-field';
-// import Progress from '@/components/ui/progress/Progress.vue';
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
 import Separator from '@/components/ui/separator/Separator.vue';
-// import Sonner from '@/components/ui/sonner/Sonner.vue';
 import Spinner from '@/components/ui/spinner/Spinner.vue';
 import Switch from '@/components/ui/switch/Switch.vue';
-import type { Product } from '@/types';
+import type { Category, Product } from '@/types';
+import {
+  PageHeading,
+  CardHeading
+} from '@/components/admin';
 
 const props = defineProps<{
   product: Product;
+  categories: Category[];
 }>();
 
 const form = useForm({
@@ -31,6 +42,7 @@ const form = useForm({
   price: props.product.price,
   stock: props.product.stock,
   thumbnail: null,
+  category_id: props.product.category_id,
   is_active: props.product.is_active,
 });
 
@@ -49,11 +61,8 @@ const submit = () => {
 
   <form @submit.prevent="submit" class="max-w-6xl px-6 py-8" enctype="multipart/form-data">
 
-    <div class="mb-8 flex flex-col sm:flex-row gap-y-4 justify-between">
-      <div>
-        <h1 class="text-2xl font-semibold tracking-tight text-foreground">Edit Product</h1>
-        <p class="mt-1 text-sm text-muted-foreground">Update product details and settings.</p>
-      </div>
+    <PageHeading title="Edit Product" description="Update product details and settings.">
+
       <div class="flex items-center gap-x-3">
         <Button type="button" variant="outline">Discard</Button>
         <Button type="submit" :disabled="form.processing">
@@ -61,7 +70,8 @@ const submit = () => {
           Save Changes
         </Button>
       </div>
-    </div>
+
+    </PageHeading>
 
     <div>
       <progress v-if="form.progress" class="w-full h-3 rounded-full appearance-none block overflow-hidden bg-slate-100
@@ -76,7 +86,7 @@ const submit = () => {
     <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
 
       <div class="flex flex-col rounded-xl border border-border bg-card p-6 shadow-xs lg:col-span-2 lg:row-start-1">
-        <h2 class="mb-5 text-sm font-medium text-foreground">Product Information</h2>
+        <CardHeading>Product Information</CardHeading>
 
         <div class="flex flex-1 flex-col gap-y-5">
           <div class="flex flex-col gap-y-1.5">
@@ -96,16 +106,17 @@ const submit = () => {
       </div>
 
       <div class="flex flex-col rounded-xl border border-border bg-card p-6 shadow-xs lg:col-start-3 lg:row-start-1">
-        <h2 class="mb-4 text-sm font-medium text-foreground">Thumbnail</h2>
-        <div class="flex flex-1 flex-col justify-center gap-y-3">
-          <div v-if="product.thumbnail_url" class="relative flex-1 overflow-hidden rounded-xl bg-muted/60 dark:bg-muted/30"
-            style="min-height: 12rem;">
-            <img :src="product.thumbnail_url ?? 'dd'" :alt="product.name"
-              class="h-full w-full object-cover" />
-            </div>
-            <p v-else>No image Uploaded</p>
+        <CardHeading>Product Thumbnail</CardHeading>
 
-          <Label for="product-thumbnail" class="w-full text-primary-foreground bg-primary py-3 text-center font-bold rounded-md flex justify-center cursor-pointer hover:bg-primary/90 transition-colors duration-200">
+        <div class="flex flex-1 flex-col justify-center gap-y-3">
+          <div v-if="product.thumbnail_url"
+            class="relative flex-1 overflow-hidden rounded-xl bg-muted/60 dark:bg-muted/30" style="min-height: 12rem;">
+            <img :src="product.thumbnail_url ?? 'dd'" :alt="product.name" class="h-full w-full object-cover" />
+          </div>
+          <p v-else>No image Uploaded</p>
+
+          <Label for="product-thumbnail"
+            class="w-full text-primary-foreground bg-primary py-3 text-center font-bold rounded-md flex justify-center cursor-pointer hover:bg-primary/90 transition-colors duration-200">
             Upload Image
           </Label>
           <Input type="file" id="product-thumbnail" hidden @input="form.thumbnail = $event.target.files[0]" />
@@ -113,8 +124,25 @@ const submit = () => {
         </div>
       </div>
 
+      <div class="flex flex-col rounded-xl border border-border bg-card p-6 shadow-xs lg:col-start-3 lg:row-start-2">
+        <CardHeading>Category</CardHeading>
+
+        <Select v-model="form.category_id">
+          <SelectTrigger class="w-full">
+            <SelectValue placeholder="Select Category" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem v-for="category in categories" :key="category.id" :value="category.id">
+                {{ category.name }}
+              </SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
       <div class="flex flex-col rounded-xl border border-border bg-card p-6 shadow-xs lg:col-span-2 lg:row-start-2">
-        <h2 class="mb-5 text-sm font-medium text-foreground">Pricing & Inventory</h2>
+        <CardHeading>Pricing & Inventory</CardHeading>
 
         <div class="grid grid-cols-2 gap-x-4 gap-y-5">
           <div class="flex flex-col gap-y-1.5">
