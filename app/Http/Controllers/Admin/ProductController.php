@@ -33,8 +33,11 @@ class ProductController extends Controller
 
   public function edit(Product $product)
   {
+    $categories = Category::select('id', 'name')->get();
+
     return Inertia::render('admin/products/Edit', [
-      'product' => $product
+      'product' => $product,
+      'categories' => $categories
     ]);
   }
 
@@ -47,7 +50,8 @@ class ProductController extends Controller
       'price' => ['required', 'numeric', 'min:1'],
       'stock' => ['required', 'numeric', 'min:0'],
       'is_active' => ['required', 'boolean'],
-      'thumbnail' => ['nullable', 'image']
+      'thumbnail' => ['nullable', 'image'],
+      'category_id' => ['required', 'exists:categories,id']
     ]);
 
     if ($request->hasFile('thumbnail') === true) {

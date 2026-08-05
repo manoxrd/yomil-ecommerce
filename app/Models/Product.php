@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Storage;
 use Spatie\Sluggable\Attributes\Sluggable;
 
-#[Fillable(['name', 'stock', 'price', 'is_active', 'description', 'thumbnail'])]
+#[Fillable(['name', 'stock', 'price', 'is_active', 'description', 'thumbnail', 'category_id'])]
 #[Sluggable(from: 'name', to: 'slug')]
 
 /**
