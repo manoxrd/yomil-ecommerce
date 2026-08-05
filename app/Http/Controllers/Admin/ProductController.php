@@ -29,7 +29,29 @@ class ProductController extends Controller
     ]);
   }
 
-  public function store(Request $request) {}
+  public function store(Request $request) 
+  {
+    $validated = $request->validate([
+      'name' => ['required', 'string', 'max:50', 'min:5'],
+      'description' => ['nullable', 'string', 'max:255', 'min:10'],
+      'price' => ['required', 'numeric', 'min:1'],
+      'stock' => ['required', 'numeric', 'min:0'],
+      'thumbnail' => ['nullable', 'image'],
+      'category_id' => ['required', 'exists:categories,id']
+    ]);
+
+    if($request->hasFile('thumbnail') === true) {
+
+      $validated['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
+
+    } else {
+      unset($validated['thumbnail']);
+    }
+
+    $product = $request->user()->products()->create($validated);
+    
+    return redirect()->route('admin.products.edit', $product->id);
+  }
 
   public function edit(Product $product)
   {

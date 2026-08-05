@@ -1,5 +1,6 @@
 <script setup lang='ts'>
 import { Head, useForm } from '@inertiajs/vue3';
+import { toast } from 'vue-sonner';
 import CardHeading from '@/components/admin/CardHeading.vue';
 import PageHeading from '@/components/admin/PageHeading.vue';
 import InputError from '@/components/InputError.vue';
@@ -23,8 +24,8 @@ import {
 } from '@/components/ui/select'
 import Separator from '@/components/ui/separator/Separator.vue';
 import Spinner from '@/components/ui/spinner/Spinner.vue';
+import { store } from '@/routes/admin/products';
 import type { Category } from '@/types';
-
 
 defineProps<{
   categories: Category[]
@@ -39,13 +40,21 @@ const form = useForm({
   category_id: null,
 })
 
+const submit = () => {
+  form.post(store.url(), {
+    onSuccess: () => {
+      toast.success('Your Product has been created');
+    }
+  });
+}
+
 </script>
 
 <template>
 
   <Head title="Create Product" />
 
-  <form @submit.prevent="" class="max-w-6xl px-6 py-8" enctype="multipart/form-data">
+  <form @submit.prevent="submit" class="max-w-6xl px-6 py-8" enctype="multipart/form-data">
 
     <PageHeading title="Create Product">
       <div class="flex items-center gap-x-3">
