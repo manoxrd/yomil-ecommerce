@@ -2,6 +2,11 @@
 import { Head, useForm } from '@inertiajs/vue3';
 import { toast } from 'vue-sonner';
 import { update } from '@/actions/App/Http/Controllers/Admin/ProductController';
+import {
+  PageHeading,
+  CardHeading
+} from '@/components/admin';
+import DeleteDialog from '@/components/admin/DeleteDialog.vue';
 import InputError from '@/components/InputError.vue';
 import Button from '@/components/ui/button/Button.vue';
 import Input from '@/components/ui/input/Input.vue';
@@ -24,11 +29,9 @@ import {
 import Separator from '@/components/ui/separator/Separator.vue';
 import Spinner from '@/components/ui/spinner/Spinner.vue';
 import Switch from '@/components/ui/switch/Switch.vue';
+import { destroy } from '@/routes/admin/products';
+import { show } from '@/routes/products';
 import type { Category, Product } from '@/types';
-import {
-  PageHeading,
-  CardHeading
-} from '@/components/admin';
 
 const props = defineProps<{
   product: Product;
@@ -46,6 +49,14 @@ const form = useForm({
   is_active: props.product.is_active,
 });
 
+const deleteForm = useForm({
+  _method: 'delete',
+})
+
+const deleteProduct = () => {
+  deleteForm.post(destroy.url(props.product.id))
+}
+
 const submit = () => {
   form.post(update.url(props.product.id), {
     onSuccess: () => {
@@ -61,16 +72,18 @@ const submit = () => {
 
   <form @submit.prevent="submit" class="max-w-6xl px-6 py-8" enctype="multipart/form-data">
 
-    <PageHeading title="Edit Product" description="Update product details and settings.">
+    <PageHeading title="Edit Product" :link-name='product.name' :link='show.url(product.slug)'
+      description="Update product details and settings.">
 
+      
       <div class="flex items-center gap-x-3">
-        <Button type="button" variant="outline">Discard</Button>
-        <Button type="submit" :disabled="form.processing">
+        <DeleteDialog @on-delete-product="deleteProduct" :processing="deleteForm.processing" />
+
+        <Button class="cursor-pointer" type="submit" :disabled="form.processing">
           <Spinner v-if="form.processing" />
           Save Changes
         </Button>
       </div>
-
     </PageHeading>
 
     <div>
@@ -124,21 +137,37 @@ const submit = () => {
         </div>
       </div>
 
-      <div class="flex flex-col rounded-xl border border-border bg-card p-6 shadow-xs lg:col-start-3 lg:row-start-2">
-        <CardHeading>Category</CardHeading>
+      <div class="flex flex-col gap-3 lg:col-start-3 lg:row-start-2">
+        <div class="rounded-xl border border-border bg-card p-6 shadow-xs">
 
-        <Select v-model="form.category_id">
-          <SelectTrigger class="w-full">
-            <SelectValue placeholder="Select Category" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              <SelectItem v-for="category in categories" :key="category.id" :value="category.id">
-                {{ category.name }}
-              </SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+          <CardHeading>Category</CardHeading>
+
+          <Select v-model="form.category_id">
+            <SelectTrigger class="w-full">
+              <SelectValue placeholder="Select Category" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectGroup>
+                <SelectItem v-for="category in categories" :key="category.id" :value="category.id">
+                  {{ category.name }}
+                </SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div class="rounded-xl border border-border bg-card p-6 shadow-xs">
+
+          <h2 class="mb-4 text-sm font-medium text-foreground">Status</h2>
+
+          <div class="flex items-center justify-between rounded-lg bg-muted/40 px-4 py-3">
+            <div>
+              <p class="text-sm font-medium text-foreground">Active</p>
+              <p class="text-xs text-muted-foreground">Visible to customers</p>
+            </div>
+            <Switch v-model="form.is_active" />
+          </div>
+        </div>
       </div>
 
       <div class="flex flex-col rounded-xl border border-border bg-card p-6 shadow-xs lg:col-span-2 lg:row-start-2">
@@ -174,20 +203,34 @@ const submit = () => {
               <InputError v-if="form.errors.stock" :message="form.errors.stock" />
             </NumberField>
           </div>
-        </div>
-      </div>
-
-      <div class="flex flex-col rounded-xl border border-border bg-card p-6 shadow-xs lg:col-start-3 lg:row-start-2">
-        <h2 class="mb-4 text-sm font-medium text-foreground">Status</h2>
-
-        <div class="flex items-center justify-between rounded-lg bg-muted/40 px-4 py-3">
-          <div>
-            <p class="text-sm font-medium text-foreground">Active</p>
-            <p class="text-xs text-muted-foreground">Visible to customers</p>
+          <div class="flex flex-col gap-y-1.5">
+            <NumberField id="product-stock" v-model="form.stock" :min="0">
+              <Label for="product-stock">Blank</Label>
+              <NumberFieldContent>
+                <NumberFieldDecrement />
+                <NumberFieldInput />
+                <NumberFieldIncrement />
+              </NumberFieldContent>
+              <InputError v-if="form.errors.stock" :message="form.errors.stock" />
+            </NumberField>
           </div>
-          <Switch v-model="form.is_active" />
+          <div class="flex flex-col gap-y-1.5">
+            <NumberField id="product-stock" v-model="form.stock" :min="0">
+              <Label for="product-stock">Blank</Label>
+              <NumberFieldContent>
+                <NumberFieldDecrement />
+                <NumberFieldInput />
+                <NumberFieldIncrement />
+              </NumberFieldContent>
+              <InputError v-if="form.errors.stock" :message="form.errors.stock" />
+            </NumberField>
+          </div>
         </div>
       </div>
+
+      <!-- <div class="flex flex-col rounded-xl border border-border bg-card p-6 shadow-xs lg:col-start-3 lg:row-start-3">
+        
+      </div> -->
 
     </div>
   </form>

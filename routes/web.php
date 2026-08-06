@@ -18,6 +18,8 @@ Route::middleware(['auth', UserHasRole::class . ':admin,employee'])->prefix('adm
 
   Route::get('products/create', [AdminProductController::class, 'create'])->name('products.create');
   Route::post('products', [AdminProductController::class, 'store'])->name('products.store');
+
+  Route::delete('products/{product}', [AdminProductController::class, 'destroy'])->name('products.destroy');
 });
 
 Route::get('products', [ProductController::class, 'index'])->name('products.index');

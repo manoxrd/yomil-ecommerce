@@ -60,10 +60,10 @@ defineProps<{
               </th>
               <th scope="col" class="px-4 py-3 font-medium">Product Name</th>
               <th scope="col" class="px-4 py-3 font-medium">Category</th>
-              <th scope="col" class="px-4 py-3 text-right font-medium">
+              <th scope="col" class="px-4 py-3 font-medium">
                 Price
               </th>
-              <th scope="col" class="px-4 py-3 text-right font-medium">
+              <th scope="col" class="px-4 py-3 font-medium">
                 Stock
               </th>
               <th scope="col" class="px-4 py-3 text-center font-medium">
@@ -88,17 +88,17 @@ defineProps<{
               <td
                 class="px-4 py-3 font-medium text-gray-900 dark:text-gray-100"
               >
-                <Link :href="edit(product.id)">
+                <Link :href="edit.url(product.id)">
                   {{ product.name }}
                 </Link>
               </td>
               <td class="px-4 py-3 text-gray-500 dark:text-gray-400">
-                Electronics
+                {{ product.category?.name }}
               </td>
-              <td class="px-4 py-3 text-right">
-                <ProductPrice :price="product.price" />
+              <td class="px-4 py-3">
+                <ProductPrice variant="base" :price="product.price" />
               </td>
-              <td class="px-4 py-3 text-right">
+              <td class="pr-4 py-3 text-center">
                 {{ product.stock }}
               </td>
               <td class="px-4 py-3 text-center">
