@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Welcome')->name('home');
 
-Route::middleware(['auth', UserHasRole::class . ':admin,employee'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', UserHasRole::class . ':admin'])->prefix('admin')->name('admin.')->group(function () {
 
   Route::inertia('dashboard', 'admin/Dashboard')->name('dashboard');
 

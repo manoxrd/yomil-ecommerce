@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreProductRequest;
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -29,27 +31,19 @@ class ProductController extends Controller
     ]);
   }
 
-  public function store(Request $request) 
+  public function store(StoreProductRequest $request)
   {
-    $validated = $request->validate([
-      'name' => ['required', 'string', 'max:50', 'min:5'],
-      'description' => ['nullable', 'string', 'max:255', 'min:10'],
-      'price' => ['required', 'numeric', 'min:1'],
-      'stock' => ['required', 'numeric', 'min:0'],
-      'thumbnail' => ['nullable', 'image'],
-      'category_id' => ['required', 'exists:categories,id']
-    ]);
+    $validated = $request->validated();
 
-    if($request->hasFile('thumbnail') === true) {
+    if ($request->hasFile('thumbnail')) {
 
       $validated['thumbnail'] = $request->file('thumbnail')->store('thumbnails', 'public');
-
     } else {
       unset($validated['thumbnail']);
     }
 
     $product = $request->user()->products()->create($validated);
-    
+
     return redirect()->route('admin.products.edit', $product->id);
   }
 
@@ -63,20 +57,12 @@ class ProductController extends Controller
     ]);
   }
 
-  public function update(Request $request, Product $product)
+  public function update(UpdateProductRequest $request, Product $product)
   {
 
-    $validated = $request->validate([
-      'name' => ['required', 'string', 'max:50', 'min:5'],
-      'description' => ['nullable', 'string', 'max:255', 'min:10'],
-      'price' => ['required', 'numeric', 'min:1'],
-      'stock' => ['required', 'numeric', 'min:0'],
-      'is_active' => ['required', 'boolean'],
-      'thumbnail' => ['nullable', 'image'],
-      'category_id' => ['required', 'exists:categories,id']
-    ]);
-
-    if ($request->hasFile('thumbnail') === true) {
+    $validated = $request->validated();
+    
+    if ($request->hasFile('thumbnail')) {
 
       if ($product->thumbnail) {
         Storage::disk('public')->delete($product->thumbnail);

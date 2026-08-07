@@ -129,6 +129,7 @@ const submit = () => {
             </SelectGroup>
           </SelectContent>
         </Select>
+                      <InputError v-if="form.errors.category_id" :message="form.errors.category_id" />
       </div>
 
       <div class="flex flex-col rounded-xl border border-border bg-card p-6 shadow-xs lg:col-span-2 lg:row-start-2">

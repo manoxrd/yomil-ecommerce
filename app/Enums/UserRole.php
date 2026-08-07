@@ -5,6 +5,7 @@ namespace App\Enums;
 enum UserRole: string
 {
     case Admin = 'admin';
-    case Employee = 'employee';
+    // Employee role will be added as a feature after finishing the project.
+    // case Employee = 'employee';
     case Customer = 'customer';
 }
